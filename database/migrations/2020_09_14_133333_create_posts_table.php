@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             ->references('id')
             ->on('users');
 
-            $table->text('image');
+            $table->text('image')->nullable();
             $table->string('title');
             $table->longtext('content');
             $table->timestamps();

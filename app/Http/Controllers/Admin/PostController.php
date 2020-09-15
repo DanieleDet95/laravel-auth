@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\SendNewMail;
+use App\Mail\SendMailEliminated;
+use Illuminate\Support\Facades\Mail;
 use App\Post;
 use App\User;
 
@@ -30,7 +33,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+      return view('admin.posts.create');
     }
 
     /**
@@ -41,7 +44,25 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+        'title' => 'required',
+        'content' => 'required',
+        'image' => 'required',
+      ]);
+
+      $data = $request->all();
+      $user =  Auth::user();
+      $newpost = new Post();
+      $newpost->user_id = Auth::id();
+      $newpost->title = $data['title'];
+      $newpost->content = $data['content'];
+      $path = $request->file('image')->store('images','public');
+      $newpost->image = $path;
+      $newpost->save();
+
+      Mail::to($newpost->user->email)->send(new SendNewMail($newpost));
+
+      return redirect()->route('admin.posts.show', $newpost);
     }
 
     /**
@@ -82,10 +103,17 @@ class PostController extends Controller
       $request->validate([
         'title' => 'required',
         'content' => 'required',
+        'image' => 'required',
       ]);
 
       $data = $request->all();
-      $post->update($data);
+      $user =  Auth::user();
+      $post->user_id = Auth::id();
+      $post->title = $data['title'];
+      $post->content = $data['content'];
+      $path = $request->file('image')->store('images','public');
+      $post->image = $path;
+      $post->save();
 
       return redirect()->route('admin.posts.show', $post);
     }
@@ -98,6 +126,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+      Mail::to($post->user->email)->send(new SendMailEliminated($post));
+
       $post->delete();
 
       return redirect()->route('admin.posts.index');

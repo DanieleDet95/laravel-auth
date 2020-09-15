@@ -12,6 +12,7 @@
             <a class="btn btn-primary left m-1" href="{{ route('posts.show', $post) }}">
               <div>Visualizza</div>
             </a>
+            <div class="clearfix"></div>
           @endforeach
         </ul>
       </div>

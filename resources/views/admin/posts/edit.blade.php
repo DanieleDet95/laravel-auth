@@ -18,7 +18,7 @@
 
         <h1 class="red">Modifica post: {{ $post->title }}</h1>
 
-        <form action="{{ route('admin.posts.update', $post->id ) }}" method="post">
+        <form action="{{ route('admin.posts.update', $post->id ) }}" method="post" enctype="multipart/form-data">
           @csrf
           @method('PUT')
 
@@ -28,7 +28,13 @@
           <label>Contenuto</label><br>
           <textarea rows="4" cols="50" name="content">{{ $post->content }}</textarea><br>
 
-          <input type="submit" value="Modifica">
+          <label>Immagine</label>
+          <input type="file" name="image" accept="image/*">
+
+          <div>
+            <input type="submit" value="Modifica">
+          </div>
+
         </form>
 
       </div>
