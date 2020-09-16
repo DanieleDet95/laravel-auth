@@ -37,6 +37,10 @@
 
         </form>
 
+        <div>
+          <a href="{{ route('admin.posts.index')}}">Indietro</a>
+        </div>
+
       </div>
     </div>
   </div>

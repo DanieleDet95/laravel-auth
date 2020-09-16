@@ -10,3 +10,27 @@
 .left{
   float: left;
 }
+.blocco{
+  border: 3px solid black;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin: 20px;
+  .container{
+    padding: 0;
+    margin-right: 0;
+    margin-left: 0;
+    img{
+      width: 100%;
+    }
+    .info{
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+      .btn-danger{
+        width: 98.5%;
+      }
+    }
+  }
+
+}
